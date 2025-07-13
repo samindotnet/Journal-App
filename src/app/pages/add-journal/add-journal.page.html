@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>New Entry</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-textarea 
+  [(ngModel)]="content" 
+  label="Write your journal..."
+  rows="8">
+</ion-textarea>
+<ion-button
+expand="block"
+(click)="save()"
+>Save Entry</ion-button>
+
+<ion-button 
+expand="block"
+fill="clear"
+(click)="cancel()">Cancel</ion-button>
+</ion-content>

@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form (submit)="login()">
+    <ion-input 
+    [(ngModel)]="email" 
+    name="email" 
+    type="email"
+    label="Email"
+    required>
+  </ion-input>
+
+  <ion-input 
+  [(ngModel)]="password"
+  name="password"
+  type="password"
+  label="password"
+  required
+  ></ion-input>
+
+  <ion-button 
+  expand="full"
+  type="submit"
+  >Login
+</ion-button>
+
+<ion-button
+expand="full"
+fill="clear"
+(click)="gotoRegister()">
+Register
+</ion-button>
+
+<ion-button
+expand="full"
+fill="clear"
+(click)="gotoResetPassword()">
+Reset Password</ion-button>
+
+<p *ngIf="error" color="danger">{{error}}</p>
+  </form>
+</ion-content>
