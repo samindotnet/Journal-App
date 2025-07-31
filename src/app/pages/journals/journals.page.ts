@@ -5,7 +5,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 import { JournalService, JournalEntry } from 'src/app/services/journal.service';
 import { Observable, of } from 'rxjs';
-import {ToastController} from '@ionic/angular'
+import {ToastController,AlertController} from '@ionic/angular'
 import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-journals',
@@ -25,7 +25,8 @@ export class JournalsPage implements OnInit {
     private auth: AuthService, 
     private router: Router, 
     private journal: JournalService,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private alertCtrl: AlertController
   ) { }
 
   logout(){
@@ -51,16 +52,40 @@ export class JournalsPage implements OnInit {
   }
 
   async edit(entry: JournalEntry){
-    const newContent = prompt('Edit your journal:', entry.content)
-    if(newContent !== null && newContent.trim() !== ''){
-      try{
-        await this.journal.updateEntry(entry.id!, newContent)
-        this.showToast('Entry updated')
-      }
-      catch{
-        this.showToast('Failed to update entry','danger')
-      }
-    }
+    const alert = await this.alertCtrl.create({
+      header:'Edit Entry',
+      inputs:[
+        {
+          name:'content',
+          type:'textarea',
+          value:entry.content,
+          attributes:{
+            rows:6,
+            style:'height: 140px'
+          }
+        }
+      ],
+      buttons:[
+        {
+          text:'Cancel',
+          role:'cancel'
+        },{
+          text:'Edit',
+          handler:async(data)=>{
+            const newContent = data.content?.trim()
+            if(newContent){
+              try{
+                await this.journal.updateEntry(entry.id!,newContent)
+                this.showToast('Entry updated')
+              } catch{
+                this.showToast('Failed to update entry', 'danger')
+              }
+            }
+          }
+        }
+      ]
+    })
+    await alert.present()
   }
 
   async showToast(message: string, color: string='success'){
